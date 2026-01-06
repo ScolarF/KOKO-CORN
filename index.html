@@ -1392,22 +1392,11 @@
                 <div class="customize-item-name" id="customizeItemName"></div>
                 <div class="customize-item-price" id="customizeItemPrice"></div>
 
-                <div class="addons-section">
+                <div class="addons-section" id="addonsSection">
                     <h4 class="addons-title">هل تريد إضافة؟</h4>
-
-                    <label class="addon-option">
-                        <input type="checkbox" id="addonTurmus" value="100000">
-                        <span class="addon-checkbox"></span>
-                        <span class="addon-name">ترمس</span>
-                        <span class="addon-price">100,000 ل.ل</span>
-                    </label>
-
-                    <label class="addon-option">
-                        <input type="checkbox" id="addonCarrotLemon" value="50000">
-                        <span class="addon-checkbox"></span>
-                        <span class="addon-name">جزر و حامض</span>
-                        <span class="addon-price">50,000 ل.ل</span>
-                    </label>
+                    <div id="addonsList">
+                        <!-- Add-ons will be populated by JavaScript -->
+                    </div>
                 </div>
 
                 <div class="customize-total">
@@ -1423,25 +1412,41 @@
     </div>
 
     <script>
-        // Menu Data - Simple and clean
+        // Addon Definitions
+        const addonTypes = {
+            standard: [
+                { id: 'turmus', name: 'ترمس', price: 100000 },
+                { id: 'carrotLemon', name: 'جزر و حامض', price: 50000 }
+            ],
+            sweetpotato: [
+                { id: 'barbecue', name: 'باربكيو', price: 50000 },
+                { id: 'cheddar', name: 'شيدر', price: 50000 }
+            ],
+            barbecue: [
+                { id: 'barbecue', name: 'باربكيو', price: 50000 }
+            ],
+            none: []
+        };
+
+        // Menu Data with addon types
         const menuItems = [
-            { id: 1, name: "صحن فول", price: 200000, category: "regular" },
-            { id: 2, name: "صحن فول اكسترا", price: 400000, category: "regular" },
-            { id: 3, name: "عرنوس", price: 200000, category: "regular" },
-            { id: 4, name: "ذرة مع شيدر", price: 300000, category: "regular" },
-            { id: 5, name: "ذرة مع شيدر و سيتوس", price: 350000, category: "regular" },
-            { id: 6, name: "شمندر", price: 200000, category: "regular" },
-            { id: 7, name: "شمندر كبير", price: 400000, category: "regular" },
-            { id: 8, name: "ترمس", price: 200000, category: "regular" },
-            { id: 9, name: "ترمس كبير", price: 400000, category: "regular" },
-            { id: 10, name: "جزر", price: 200000, category: "regular" },
-            { id: 11, name: "جزر كبير", price: 350000, category: "regular" },
-            { id: 12, name: "بطاطا حلوة", price: 200000, category: "regular" },
-            { id: 13, name: "كستنا", price: 200000, category: "regular" },
-            { id: 14, name: "صحن ميكس", price: 500000, category: "special", description: "فول + ترمس + جزر" },
-            { id: 15, name: "صحن عائلي", price: 1000000, category: "special", description: "ذرة + فول + ترمس + شمندر + جزر + رمان" },
-            { id: 16, name: "صحن شتوي مشكل", price: 10, category: "special", currency: "USD", description: "بطاطا حلوة + كستنا + شمندر + ذرة" },
-            { id: 17, name: "علبة رمان مفروط", price: 300000, category: "regular" }
+            { id: 1, name: "صحن فول", price: 200000, category: "regular", addonType: "standard" },
+            { id: 2, name: "صحن فول اكسترا", price: 400000, category: "regular", addonType: "standard" },
+            { id: 3, name: "عرنوس", price: 200000, category: "regular", addonType: "standard" },
+            { id: 4, name: "ذرة مع شيدر", price: 300000, category: "regular", addonType: "barbecue" },
+            { id: 5, name: "ذرة مع شيدر و سيتوس", price: 350000, category: "regular", addonType: "barbecue" },
+            { id: 6, name: "شمندر", price: 200000, category: "regular", addonType: "none" },
+            { id: 7, name: "شمندر كبير", price: 400000, category: "regular", addonType: "none" },
+            { id: 8, name: "ترمس", price: 200000, category: "regular", addonType: "none" },
+            { id: 9, name: "ترمس كبير", price: 400000, category: "regular", addonType: "none" },
+            { id: 10, name: "جزر", price: 200000, category: "regular", addonType: "none" },
+            { id: 11, name: "جزر كبير", price: 350000, category: "regular", addonType: "none" },
+            { id: 12, name: "بطاطا حلوة", price: 200000, category: "regular", addonType: "sweetpotato" },
+            { id: 13, name: "كستنا", price: 200000, category: "regular", addonType: "none" },
+            { id: 14, name: "صحن ميكس", price: 500000, category: "special", description: "فول + ترمس + جزر", addonType: "standard" },
+            { id: 15, name: "صحن عائلي", price: 1000000, category: "special", description: "ذرة + فول + ترمس + شمندر + جزر + رمان", addonType: "standard" },
+            { id: 16, name: "صحن شتوي مشكل", price: 10, category: "special", currency: "USD", description: "بطاطا حلوة + كستنا + شمندر + ذرة", addonType: "standard" },
+            { id: 17, name: "علبة رمان مفروط", price: 300000, category: "regular", addonType: "none" }
         ];
 
         // Cart State
@@ -1471,14 +1476,29 @@
         // Current item being customized
         let currentItem = null;
 
-        // Open Customization Modal
+        // Open Customization Modal or add directly to cart
         function openCustomize(itemId) {
             currentItem = menuItems.find(i => i.id === itemId);
             if (!currentItem) return;
 
-            // Reset checkboxes
-            document.getElementById('addonTurmus').checked = false;
-            document.getElementById('addonCarrotLemon').checked = false;
+            const addons = addonTypes[currentItem.addonType] || [];
+
+            // If no add-ons, add directly to cart
+            if (addons.length === 0) {
+                addDirectToCart(currentItem);
+                return;
+            }
+
+            // Render dynamic add-ons
+            const addonsList = document.getElementById('addonsList');
+            addonsList.innerHTML = addons.map(addon => `
+                <label class="addon-option">
+                    <input type="checkbox" class="addon-checkbox-input" data-id="${addon.id}" data-price="${addon.price}" data-name="${addon.name}" onchange="updateCustomizeTotal()">
+                    <span class="addon-checkbox"></span>
+                    <span class="addon-name">${addon.name}</span>
+                    <span class="addon-price">${addon.price.toLocaleString('en-US')} ل.ل</span>
+                </label>
+            `).join('');
 
             // Set item info
             document.getElementById('customizeItemName').textContent = currentItem.name;
@@ -1490,6 +1510,19 @@
             // Show modal
             document.getElementById('customizeModal').classList.add('active');
             document.body.style.overflow = 'hidden';
+        }
+
+        // Add item directly to cart without add-ons
+        function addDirectToCart(item) {
+            cart.push({
+                ...item,
+                addons: [],
+                addonsPrice: 0,
+                totalPrice: item.price,
+                cartId: Date.now()
+            });
+            updateCartCount();
+            showToast(`تم إضافة ${item.name} إلى السلة ✓`);
         }
 
         // Close Customization Modal
@@ -1506,19 +1539,14 @@
             let total = currentItem.price;
             const currency = currentItem.currency;
 
-            if (document.getElementById('addonTurmus').checked) {
-                total += 100000;
-            }
-            if (document.getElementById('addonCarrotLemon').checked) {
-                total += 50000;
-            }
+            // Get all checked add-ons
+            const checkboxes = document.querySelectorAll('.addon-checkbox-input:checked');
+            checkboxes.forEach(cb => {
+                total += parseInt(cb.dataset.price);
+            });
 
             document.getElementById('customizeTotal').textContent = formatPrice(total, currency);
         }
-
-        // Add event listeners for checkboxes
-        document.getElementById('addonTurmus').addEventListener('change', updateCustomizeTotal);
-        document.getElementById('addonCarrotLemon').addEventListener('change', updateCustomizeTotal);
 
         // Confirm and add to cart
         function confirmAddToCart() {
@@ -1527,14 +1555,12 @@
             let addons = [];
             let addonsPrice = 0;
 
-            if (document.getElementById('addonTurmus').checked) {
-                addons.push('طرمس');
-                addonsPrice += 100000;
-            }
-            if (document.getElementById('addonCarrotLemon').checked) {
-                addons.push('جزر و حامض');
-                addonsPrice += 50000;
-            }
+            // Get all checked add-ons
+            const checkboxes = document.querySelectorAll('.addon-checkbox-input:checked');
+            checkboxes.forEach(cb => {
+                addons.push(cb.dataset.name);
+                addonsPrice += parseInt(cb.dataset.price);
+            });
 
             const totalPrice = currentItem.price + addonsPrice;
 
