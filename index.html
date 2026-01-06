@@ -1526,11 +1526,15 @@
 
         // Add item directly to cart without add-ons
         function addDirectToCart(item) {
+            // Convert USD to LBP for total
+            const basePriceLBP = item.currency === 'USD' ? item.price * USD_RATE : item.price;
+
             cart.push({
                 ...item,
                 addons: [],
                 addonsPrice: 0,
                 totalPrice: item.price,
+                totalPriceLBP: basePriceLBP,
                 cartId: Date.now()
             });
             updateCartCount();
@@ -1548,16 +1552,18 @@
         function updateCustomizeTotal() {
             if (!currentItem) return;
 
-            let total = currentItem.price;
-            const currency = currentItem.currency;
+            // Convert base price to LBP first
+            let basePriceLBP = currentItem.currency === 'USD' ? currentItem.price * USD_RATE : currentItem.price;
 
-            // Get all checked add-ons
+            // Get all checked add-ons (already in LBP)
             const checkboxes = document.querySelectorAll('.addon-checkbox-input:checked');
+            let addonsPrice = 0;
             checkboxes.forEach(cb => {
-                total += parseInt(cb.dataset.price);
+                addonsPrice += parseInt(cb.dataset.price);
             });
 
-            document.getElementById('customizeTotal').textContent = formatPrice(total, currency);
+            const totalLBP = basePriceLBP + addonsPrice;
+            document.getElementById('customizeTotal').textContent = `${totalLBP.toLocaleString('en-US')} ل.ل`;
         }
 
         // Confirm and add to cart
@@ -1567,20 +1573,23 @@
             let addons = [];
             let addonsPrice = 0;
 
-            // Get all checked add-ons
+            // Get all checked add-ons (in LBP)
             const checkboxes = document.querySelectorAll('.addon-checkbox-input:checked');
             checkboxes.forEach(cb => {
                 addons.push(cb.dataset.name);
                 addonsPrice += parseInt(cb.dataset.price);
             });
 
-            const totalPrice = currentItem.price + addonsPrice;
+            // Convert base price to LBP first, then add add-ons
+            const basePriceLBP = currentItem.currency === 'USD' ? currentItem.price * USD_RATE : currentItem.price;
+            const totalPriceLBP = basePriceLBP + addonsPrice;
 
             cart.push({
                 ...currentItem,
                 addons: addons,
                 addonsPrice: addonsPrice,
-                totalPrice: totalPrice,
+                totalPrice: currentItem.price + (currentItem.currency === 'USD' ? 0 : addonsPrice),
+                totalPriceLBP: totalPriceLBP,
                 cartId: Date.now()
             });
 
@@ -1634,17 +1643,14 @@
                     <div class="cart-item-info">
                         <div class="cart-item-name">${item.name}</div>
                         ${item.addons && item.addons.length > 0 ? `<div class="cart-item-addons">+ ${item.addons.join(' + ')}</div>` : ''}
-                        <div class="cart-item-price">${formatPrice(item.totalPrice || item.price, item.currency)}</div>
+                        <div class="cart-item-price">${item.totalPriceLBP.toLocaleString('en-US')} ل.ل</div>
                     </div>
                     <button class="cart-item-remove" onclick="removeFromCart(${item.cartId})">حذف</button>
                 </div>
             `).join('');
 
-            // Calculate total in L.L (convert USD using exchange rate)
-            const total = cart.reduce((sum, item) => {
-                const itemPrice = item.totalPrice || item.price;
-                return sum + (item.currency === 'USD' ? itemPrice * USD_RATE : itemPrice);
-            }, 0);
+            // Calculate total in L.L (use pre-calculated totalPriceLBP)
+            const total = cart.reduce((sum, item) => sum + item.totalPriceLBP, 0);
 
             document.getElementById('cartTotal').textContent = `${total.toLocaleString('en-US')} ل.ل`;
         }
@@ -1682,15 +1688,12 @@
                 if (item.addons && item.addons.length > 0) {
                     itemLine += ` + ${item.addons.join(' + ')}`;
                 }
-                itemLine += `: ${formatPrice(item.totalPrice || item.price, item.currency)}\n`;
+                itemLine += `: ${item.totalPriceLBP.toLocaleString('en-US')} ل.ل\n`;
                 message += itemLine;
             });
 
-            // Calculate total in L.L
-            const total = cart.reduce((sum, item) => {
-                const itemPrice = item.totalPrice || item.price;
-                return sum + (item.currency === 'USD' ? itemPrice * USD_RATE : itemPrice);
-            }, 0);
+            // Calculate total in L.L (use pre-calculated totalPriceLBP)
+            const total = cart.reduce((sum, item) => sum + item.totalPriceLBP, 0);
 
             message += '\n';
             message += `المجموع: ${total.toLocaleString('en-US')} ل.ل\n`;
