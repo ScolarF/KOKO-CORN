@@ -673,11 +673,17 @@
             padding: 25px 20px;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 1) 100%);
             margin-top: 40px;
-            z-index: 1;
+            z-index: 10;
             border-top: 3px solid transparent;
             background-image: linear-gradient(white, white), var(--gradient-warm);
             background-origin: border-box;
             background-clip: padding-box, border-box;
+        }
+
+        .footer a {
+            position: relative;
+            z-index: 11;
+            display: inline-block;
         }
 
         .footer-text {
@@ -829,9 +835,24 @@
             width: 100%;
             background: var(--gradient-warm);
             color: white;
-            padding: 16px;
+            padding: 18px;
             font-size: 1.1rem;
             box-shadow: var(--shadow-medium);
+            position: relative;
+            z-index: 50;
+            min-height: 56px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .btn-add-to-cart:active {
+            transform: scale(0.98);
+        }
+
+        /* Fix modal body to not overlap button */
+        .customize-modal .modal-body {
+            padding-bottom: 20px;
         }
 
         /* Responsive - Mobile First */
