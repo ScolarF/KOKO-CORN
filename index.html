@@ -1452,12 +1452,24 @@
         // Cart State
         let cart = [];
 
-        // Format Price
+        // Exchange Rate
+        const USD_RATE = 90000; // 1 USD = 90,000 L.L
+
+        // Format Price (always show in L.L for display, but keep original for items)
         function formatPrice(price, currency = "LBP") {
             if (currency === "USD") {
-                return `$${price}`;
+                // Show both USD and L.L equivalent on menu cards
+                return `$${price} (${(price * USD_RATE).toLocaleString('en-US')} ل.ل)`;
             }
             return `${price.toLocaleString('en-US')} ل.ل`;
+        }
+
+        // Convert price to L.L
+        function toLBP(price, currency = "LBP") {
+            if (currency === "USD") {
+                return price * USD_RATE;
+            }
+            return price;
         }
 
         // Render Menu - Simple cards without icons
@@ -1628,16 +1640,13 @@
                 </div>
             `).join('');
 
-            // Calculate total (handle mixed currencies) - use totalPrice which includes addons
-            const lbpTotal = cart.filter(i => i.currency !== 'USD').reduce((sum, i) => sum + (i.totalPrice || i.price), 0);
-            const usdTotal = cart.filter(i => i.currency === 'USD').reduce((sum, i) => sum + (i.totalPrice || i.price), 0);
+            // Calculate total in L.L (convert USD using exchange rate)
+            const total = cart.reduce((sum, item) => {
+                const itemPrice = item.totalPrice || item.price;
+                return sum + (item.currency === 'USD' ? itemPrice * USD_RATE : itemPrice);
+            }, 0);
 
-            let totalText = '';
-            if (lbpTotal > 0) totalText += `${lbpTotal.toLocaleString('en-US')} ل.ل`;
-            if (lbpTotal > 0 && usdTotal > 0) totalText += ' + ';
-            if (usdTotal > 0) totalText += `$${usdTotal}`;
-
-            document.getElementById('cartTotal').textContent = totalText || '0 ل.ل';
+            document.getElementById('cartTotal').textContent = `${total.toLocaleString('en-US')} ل.ل`;
         }
 
         // Remove from Cart
@@ -1677,13 +1686,14 @@
                 message += itemLine;
             });
 
-            // Calculate totals using totalPrice which includes addons
-            const lbpTotal = cart.filter(i => i.currency !== 'USD').reduce((sum, i) => sum + (i.totalPrice || i.price), 0);
-            const usdTotal = cart.filter(i => i.currency === 'USD').reduce((sum, i) => sum + (i.totalPrice || i.price), 0);
+            // Calculate total in L.L
+            const total = cart.reduce((sum, item) => {
+                const itemPrice = item.totalPrice || item.price;
+                return sum + (item.currency === 'USD' ? itemPrice * USD_RATE : itemPrice);
+            }, 0);
 
             message += '\n';
-            if (lbpTotal > 0) message += `المجموع: ${lbpTotal.toLocaleString('en-US')} ل.ل\n`;
-            if (usdTotal > 0) message += `المجموع بالدولار: $${usdTotal}\n`;
+            message += `المجموع: ${total.toLocaleString('en-US')} ل.ل\n`;
 
             message += '\nشكراً! 🌽';
 
