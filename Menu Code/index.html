@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KOKO Corn - Digital menu for delicious corn dishes and winter specialties">
+    <title>KOKO Corn | Digital Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            /* ── Brand Colors from Menu Images ── */
+            --corn-gold: #FFC72C;
+            --corn-gold-dark: #E6AF10;
+            --corn-gold-deep: #CC9900;
+            --corn-gold-glow: rgba(255, 199, 44, 0.25);
+            --corn-gold-glow-strong: rgba(255, 199, 44, 0.45);
+
+            --dark-bg: #0D0D0D;
+            --dark-surface: #161616;
+            --dark-card: #1A1A1A;
+            --dark-card-hover: #222222;
+            --dark-elevated: #252525;
+
+            --warm-white: #FFF8E7;
+            --cream-text: #F5E6C8;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0A89A;
+            --text-muted: #7A7268;
+
+            --paprika-red: #E53935;
+            --paprika-glow: rgba(229, 57, 53, 0.3);
+
+            --fresh-green: #4CAF50;
+            --green-glow: rgba(76, 175, 80, 0.3);
+            --whatsapp-green: #25D366;
+
+            /* ── Gradients ── */
+            --gradient-gold: linear-gradient(135deg, #FFC72C 0%, #E6AF10 50%, #CC9900 100%);
+            --gradient-gold-soft: linear-gradient(135deg, rgba(255, 199, 44, 0.15), rgba(230, 175, 16, 0.05));
+            --gradient-dark: linear-gradient(180deg, #0D0D0D 0%, #111111 50%, #0A0A0A 100%);
+            --gradient-card: linear-gradient(145deg, #1E1E1E 0%, #181818 100%);
+            --gradient-green: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            --gradient-whatsapp: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+
+            /* ── Effects ── */
+            --shadow-gold: 0 4px 20px rgba(255, 199, 44, 0.25);
+            --shadow-gold-strong: 0 8px 32px rgba(255, 199, 44, 0.35);
+            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 199, 44, 0.1);
+            --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.6);
+
+            --glass-bg: rgba(26, 26, 26, 0.85);
+            --glass-border: rgba(255, 199, 44, 0.12);
+
+            --radius-pill: 50px;
+            --radius-card: 20px;
+            --radius-lg: 24px;
+            --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--gradient-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── Ambient Background Particles ─── */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.08;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .ambient-orb:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: var(--corn-gold);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .ambient-orb:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            background: var(--corn-gold-dark);
+            bottom: 20%;
+            left: -80px;
+            animation-delay: 5s;
+            animation-duration: 25s;
+        }
+
+        .ambient-orb:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: var(--paprika-red);
+            top: 40%;
+            right: 10%;
+            animation-delay: 10s;
+            animation-duration: 22s;
+            opacity: 0.04;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -40px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(15px, 30px) scale(1.05); }
+        }
+
+        /* ─── Floating Ingredients ─── */
+        .floating-ingredients {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 1.8rem;
+            opacity: 0;
+            animation: floatUp 18s ease-in-out infinite;
+            color: var(--corn-gold);
+            pointer-events: none;
+        }
+
+        .floating-item:nth-child(1) { left: 5%; animation-delay: 0s; animation-duration: 20s; }
+        .floating-item:nth-child(2) { left: 15%; animation-delay: 3s; animation-duration: 22s; }
+        .floating-item:nth-child(3) { left: 25%; animation-delay: 6s; animation-duration: 18s; color: var(--corn-gold-dark); }
+        .floating-item:nth-child(4) { left: 40%; animation-delay: 1.5s; animation-duration: 24s; }
+        .floating-item:nth-child(5) { left: 55%; animation-delay: 4s; animation-duration: 19s; color: var(--corn-gold-deep); }
+        .floating-item:nth-child(6) { left: 65%; animation-delay: 7s; animation-duration: 21s; }
+        .floating-item:nth-child(7) { left: 75%; animation-delay: 2s; animation-duration: 23s; color: var(--corn-gold-dark); }
+        .floating-item:nth-child(8) { left: 88%; animation-delay: 5s; animation-duration: 17s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            8% { opacity: 0.12; }
+            92% { opacity: 0.12; }
+            100% { transform: translateY(-80px) rotate(360deg); opacity: 0; }
+        }
+
+        /* ─── Header ─── */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(13, 13, 13, 0.92);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2.5px solid var(--corn-gold);
+            box-shadow: var(--shadow-gold);
+            transition: var(--transition-smooth);
+        }
+
+        .logo:hover {
+            transform: scale(1.08);
+            box-shadow: var(--shadow-gold-strong);
+        }
+
+        .brand-name {
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: var(--gradient-gold);
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--dark-bg);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.06) translateY(-2px);
+            box-shadow: var(--shadow-gold-strong);
+        }
+
+        .cart-btn:active {
+            transform: scale(1.02);
+        }
+
+        .cart-count {
+            background: var(--paprika-red);
+            color: white;
+            padding: 2px 9px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            min-width: 24px;
+            text-align: center;
+            font-weight: 800;
+            box-shadow: 0 2px 8px var(--paprika-glow);
+        }
+
+        /* ─── Category Tabs ─── */
+        .category-tabs {
+            position: sticky;
+            top: 72px;
+            z-index: 99;
+            background: rgba(13, 13, 13, 0.88);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            padding: 12px 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            border-bottom: 1px solid rgba(255, 199, 44, 0.08);
+        }
+
+        .category-tabs::-webkit-scrollbar { display: none; }
+
+        .category-tabs-inner {
+            display: inline-flex;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .category-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 18px;
+            border-radius: var(--radius-pill);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: var(--dark-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .category-tab i { font-size: 0.92rem; }
+
+        .category-tab:hover {
+            border-color: var(--corn-gold);
+            color: var(--corn-gold);
+            background: rgba(255, 199, 44, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .category-tab.active {
+            background: var(--gradient-gold);
+            color: var(--dark-bg);
+            border-color: transparent;
+            box-shadow: var(--shadow-gold);
+            font-weight: 800;
+        }
+
+        /* ─── Hero Section ─── */
+        .hero {
+            position: relative;
+            padding: 48px 20px 40px;
+            text-align: center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--corn-gold-glow) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-logo {
+            position: relative;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--corn-gold);
+            box-shadow: 0 0 40px var(--corn-gold-glow-strong), 0 0 80px rgba(255, 199, 44, 0.15);
+            margin-bottom: 22px;
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% {
+                transform: translateY(0);
+                box-shadow: 0 0 40px var(--corn-gold-glow-strong), 0 0 80px rgba(255, 199, 44, 0.15);
+            }
+            50% {
+                transform: translateY(-8px);
+                box-shadow: 0 0 50px var(--corn-gold-glow-strong), 0 0 100px rgba(255, 199, 44, 0.2);
+            }
+        }
+
+        .welcome-text {
+            position: relative;
+            z-index: 1;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome-text span {
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            position: relative;
+            z-index: 1;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .hero-info-pills {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .info-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 1.5px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            transition: var(--transition-smooth);
+        }
+
+        .info-pill i { color: var(--corn-gold); }
+
+        .info-pill.delivery {
+            background: var(--gradient-green);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 16px var(--green-glow);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        .info-pill.rate {
+            color: var(--corn-gold);
+            font-size: 0.82rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        /* ─── Menu Section ─── */
+        .menu-section {
+            position: relative;
+            padding: 30px 20px 40px;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 28px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .section-title i { color: var(--corn-gold); }
+
+        /* ─── Category Headers ─── */
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 40px 0 20px;
+            padding: 0 5px;
+            max-width: 950px;
+            margin-left: auto;
+            margin-right: auto;
+            scroll-margin-top: 150px;
+        }
+
+        .category-header:first-child { margin-top: 0; }
+
+        .category-header-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--dark-bg);
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-header-text { flex: 1; }
+
+        .category-header-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .category-header-count {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .category-header-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 199, 44, 0.3), transparent);
+            border-radius: 2px;
+            min-width: 30px;
+        }
+
+        /* ─── Menu Grid ─── */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 16px;
+            max-width: 950px;
+            margin: 0 auto 10px;
+        }
+
+        /* ─── Menu Cards ─── */
+        .menu-card {
+            background: var(--gradient-card);
+            border-radius: var(--radius-card);
+            padding: 24px 16px 22px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-gold);
+            opacity: 0;
+            transition: opacity 0.3s ease, height 0.3s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: var(--shadow-card-hover);
+            border-color: rgba(255, 199, 44, 0.15);
+            background: var(--dark-card-hover);
+        }
+
+        .menu-card:hover::before {
+            opacity: 1;
+            height: 4px;
+        }
+
+        .menu-card:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .menu-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            line-height: 1.35;
+        }
+
+        .menu-description {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .menu-price {
+            background: var(--gradient-gold);
+            color: var(--dark-bg);
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-weight: 800;
+            font-size: 0.88rem;
+            display: inline-block;
+            box-shadow: 0 3px 12px rgba(255, 199, 44, 0.3);
+        }
+
+        /* Special cards */
+        .menu-card.special {
+            background: linear-gradient(145deg, rgba(255, 199, 44, 0.08), rgba(26, 26, 26, 1));
+            border: 1.5px solid rgba(255, 199, 44, 0.2);
+            box-shadow: var(--shadow-card), 0 0 20px rgba(255, 199, 44, 0.06);
+        }
+
+        .menu-card.special::before {
+            opacity: 1;
+            background: var(--gradient-gold);
+            height: 3px;
+        }
+
+        .special-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--paprika-red);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            z-index: 5;
+            box-shadow: 0 2px 8px var(--paprika-glow);
+        }
+
+        .menu-card.special .menu-name { margin-top: 8px; }
+
+        /* ─── Cart Modal ─── */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--dark-surface);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--glass-border);
+            border-bottom: none;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--dark-surface);
+            z-index: 10;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-title i { color: var(--corn-gold); }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 5px;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+
+        .close-btn:hover { color: var(--paprika-red); }
+
+        .modal-body { padding: 20px; }
+
+        /* ─── Cart Items ─── */
+        .cart-items { margin-bottom: 20px; }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: var(--dark-card);
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .cart-item-info { flex: 1; }
+
+        .cart-item-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .cart-item-price {
+            color: var(--corn-gold);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-addons {
+            font-size: 0.78rem;
+            color: var(--fresh-green);
+            margin-bottom: 3px;
+        }
+
+        .cart-item-remove {
+            background: rgba(229, 57, 53, 0.15);
+            color: var(--paprika-red);
+            border: 1px solid rgba(229, 57, 53, 0.2);
+            padding: 8px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cart-item-remove:hover {
+            background: var(--paprika-red);
+            color: white;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .cart-empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--text-muted);
+        }
+
+        /* ─── Cart Total ─── */
+        .cart-total {
+            background: var(--gradient-gold-soft);
+            border: 1px solid var(--glass-border);
+            padding: 18px 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .cart-total-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .cart-total-amount {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--corn-gold);
+        }
+
+        /* ─── Cart Actions ─── */
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover { transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); }
+
+        .btn-clear {
+            background: var(--dark-card);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .btn-clear:hover {
+            background: var(--dark-elevated);
+            color: var(--text-primary);
+        }
+
+        .btn-whatsapp {
+            background: var(--gradient-whatsapp);
+            color: white;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+        }
+
+        .btn-whatsapp:hover {
+            box-shadow: 0 8px 28px rgba(37, 211, 102, 0.45);
+        }
+
+        /* ─── Location Box ─── */
+        .location-box {
+            position: relative;
+            z-index: 10;
+            max-width: 340px;
+            margin: 35px auto 0;
+            background: var(--dark-card);
+            border-radius: var(--radius-card);
+            padding: 18px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .location-map {
+            margin-bottom: 14px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .location-address {
+            font-size: 0.95rem;
+            color: var(--cream-text);
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        .location-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--gradient-gold);
+            color: var(--dark-bg);
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .location-link:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold-strong);
+        }
+
+        /* ─── Footer ─── */
+        .footer {
+            position: relative;
+            text-align: center;
+            padding: 28px 20px;
+            background: var(--dark-surface);
+            margin-top: 40px;
+            z-index: 10;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer a {
+            position: relative;
+            z-index: 11;
+            display: inline-block;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 5px;
+        }
+
+        .footer-text:last-child { margin-bottom: 0; }
+
+        .footer-brand {
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        /* ─── Toast Notification ─── */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--gradient-gold);
+            color: var(--dark-bg);
+            padding: 14px 28px;
+            border-radius: var(--radius-pill);
+            font-weight: 800;
+            box-shadow: var(--shadow-gold-strong);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            user-select: none;
+            transition: var(--transition-bounce);
+            z-index: 300;
+            font-size: 0.95rem;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* ─── Customization Modal ─── */
+        .customize-modal {
+            border-radius: var(--radius-lg);
+            max-height: 90vh;
+        }
+
+        .customize-item-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .customize-item-price {
+            font-size: 1.05rem;
+            color: var(--corn-gold);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .addons-section {
+            background: var(--dark-card);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .addons-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--corn-gold);
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
+        .addon-option {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background: var(--dark-elevated);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.25s;
+            border: 1.5px solid transparent;
+        }
+
+        .addon-option:hover {
+            border-color: var(--corn-gold);
+            background: rgba(255, 199, 44, 0.06);
+        }
+
+        .addon-option input[type="checkbox"] { display: none; }
+
+        .addon-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--text-muted);
+            border-radius: 7px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s;
+            flex-shrink: 0;
+        }
+
+        .addon-option input[type="checkbox"]:checked + .addon-checkbox {
+            background: var(--corn-gold);
+            border-color: var(--corn-gold);
+        }
+
+        .addon-option input[type="checkbox"]:checked + .addon-checkbox::after {
+            content: '\2713';
+            color: var(--dark-bg);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .addon-name {
+            flex: 1;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.92rem;
+        }
+
+        .addon-price {
+            font-weight: 700;
+            color: var(--corn-gold);
+            font-size: 0.88rem;
+        }
+
+        .customize-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--gradient-gold-soft);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--corn-gold);
+        }
+
+        .btn-add-to-cart {
+            width: 100%;
+            background: var(--gradient-gold);
+            color: var(--dark-bg);
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            box-shadow: var(--shadow-gold);
+            position: relative;
+            z-index: 50;
+            min-height: 54px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            border-radius: 16px;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-add-to-cart:hover {
+            box-shadow: var(--shadow-gold-strong);
+            transform: translateY(-2px);
+        }
+
+        .btn-add-to-cart:active {
+            transform: scale(0.98);
+        }
+
+        .customize-modal .modal-body {
+            padding-bottom: 20px;
+        }
+
+        /* ─────────────────────────────────── */
+        /* RESPONSIVE BREAKPOINTS             */
+        /* ─────────────────────────────────── */
+
+        /* Extra Small Phones (320px - 374px) */
+        @media (max-width: 374px) {
+            .header { padding: 10px 12px; }
+            .logo { width: 40px; height: 40px; }
+            .brand-name { font-size: 1.15rem; }
+            .cart-btn { padding: 10px 14px; font-size: 0.9rem; }
+            .cart-count { padding: 2px 7px; font-size: 0.75rem; min-width: 20px; }
+            .category-tabs { top: 56px; padding: 8px 0; }
+            .category-tab { padding: 7px 12px; font-size: 0.75rem; }
+            .hero { padding: 28px 15px 22px; }
+            .hero-logo { width: 110px; height: 110px; }
+            .welcome-text { font-size: 1.35rem; margin-bottom: 6px; }
+            .hero-tagline { font-size: 0.75rem; margin-bottom: 14px; }
+            .info-pill { padding: 8px 14px; font-size: 0.78rem; }
+            .menu-section { padding: 18px 10px 30px; }
+            .section-title { font-size: 1.2rem; margin-bottom: 18px; }
+            .category-header { scroll-margin-top: 120px; }
+            .category-header-name { font-size: 1.05rem; }
+            .category-header-icon { width: 40px; height: 40px; font-size: 1.05rem; border-radius: 11px; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .menu-card { padding: 18px 10px 16px; min-height: 115px; border-radius: 16px; }
+            .menu-name { font-size: 0.85rem; margin-bottom: 3px; }
+            .menu-description { font-size: 0.6rem; }
+            .menu-price { font-size: 0.74rem; padding: 5px 10px; }
+            .special-badge { font-size: 0.55rem; padding: 2px 6px; top: 7px; left: 7px; }
+            .modal { border-radius: 20px 20px 0 0; }
+            .modal-header { padding: 14px; }
+            .modal-title { font-size: 1.05rem; }
+            .modal-body { padding: 14px; }
+            .customize-item-name { font-size: 1.1rem; }
+            .customize-item-price { font-size: 0.92rem; }
+            .addons-section { padding: 14px; }
+            .addon-option { padding: 12px; }
+            .addon-name { font-size: 0.85rem; }
+            .addon-price { font-size: 0.8rem; }
+            .customize-total { font-size: 0.95rem; padding: 12px 14px; }
+            .btn { padding: 12px; font-size: 0.88rem; }
+            .cart-item { padding: 12px; }
+            .cart-item-name { font-size: 0.88rem; }
+            .cart-item-price { font-size: 0.82rem; }
+            .cart-total-amount { font-size: 1.3rem; }
+            .footer { padding: 18px 14px; }
+            .footer-text { font-size: 0.8rem; }
+            .toast { padding: 12px 20px; font-size: 0.82rem; bottom: 80px; }
+        }
+
+        /* Small Phones (375px - 479px) */
+        @media (min-width: 375px) and (max-width: 479px) {
+            .header { padding: 12px 15px; }
+            .logo { width: 45px; height: 45px; }
+            .brand-name { font-size: 1.3rem; }
+            .cart-btn { padding: 11px 16px; }
+            .category-tabs { top: 62px; }
+            .hero { padding: 32px 18px 28px; }
+            .hero-logo { width: 125px; height: 125px; }
+            .welcome-text { font-size: 1.55rem; }
+            .info-pill { padding: 9px 16px; font-size: 0.82rem; }
+            .menu-section { padding: 20px 12px 35px; }
+            .section-title { font-size: 1.3rem; }
+            .category-header { scroll-margin-top: 130px; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .menu-card { padding: 20px 14px 18px; min-height: 130px; border-radius: 18px; }
+            .menu-name { font-size: 0.95rem; }
+            .menu-price { font-size: 0.82rem; padding: 5px 12px; }
+            .special-badge { font-size: 0.58rem; }
+            .cart-total-amount { font-size: 1.45rem; }
+            .toast { bottom: 90px; }
+        }
+
+        /* Medium Phones (480px - 599px) */
+        @media (min-width: 480px) and (max-width: 599px) {
+            .hero-logo { width: 135px; height: 135px; }
+            .welcome-text { font-size: 1.7rem; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .menu-card { padding: 22px 16px 20px; min-height: 140px; }
+            .menu-name { font-size: 1rem; }
+            .menu-price { font-size: 0.88rem; }
+        }
+
+        /* Large Phones / Small Tablets (600px - 767px) */
+        @media (min-width: 600px) and (max-width: 767px) {
+            .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+            .menu-card { min-height: 145px; }
+            .hero-logo { width: 145px; height: 145px; }
+            .modal { max-width: 450px; }
+        }
+
+        /* Tablets (768px+) */
+        @media (min-width: 768px) {
+            .header { padding: 15px 30px; }
+            .logo { width: 55px; height: 55px; }
+            .brand-name { font-size: 1.7rem; }
+            .hero { padding: 50px 30px 45px; }
+            .hero-logo { width: 155px; height: 155px; }
+            .welcome-text { font-size: 2.2rem; }
+            .hero-tagline { font-size: 1rem; }
+            .info-pill { padding: 12px 22px; font-size: 0.95rem; }
+            .menu-section { padding: 32px 25px 50px; }
+            .section-title { font-size: 1.65rem; margin-bottom: 32px; }
+            .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+            .menu-card { padding: 28px 18px 24px; min-height: 155px; }
+            .menu-name { font-size: 1.1rem; }
+            .menu-price { font-size: 0.95rem; padding: 7px 16px; }
+            .modal { max-width: 500px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+            .footer { padding: 32px; }
+            .footer-text { font-size: 1rem; }
+        }
+
+        /* Desktop (1024px+) */
+        @media (min-width: 1024px) {
+            .menu-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+            .menu-card:hover { transform: translateY(-10px) scale(1.03); }
+            .header { padding: 15px 50px; }
+            .hero { padding: 55px 40px 50px; }
+            .welcome-text { font-size: 2.4rem; }
+            .menu-section { padding: 38px 40px 60px; }
+        }
+
+        /* Touch-friendly for mobile */
+        @media (max-width: 1023px) {
+            .menu-card {
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+            }
+            .menu-card:active { transform: scale(0.97); }
+            .btn {
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+            }
+            .cart-btn:active { transform: scale(0.95); }
+            .addon-option:active { background: rgba(255, 199, 44, 0.06); }
+        }
+
+        /* Landscape orientation */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero { padding: 15px 20px; }
+            .hero-logo { width: 75px; height: 75px; margin-bottom: 10px; }
+            .welcome-text { font-size: 1.3rem; margin-bottom: 6px; }
+            .hero-tagline { display: none; }
+            .info-pill { padding: 7px 14px; font-size: 0.8rem; }
+            .modal { max-height: 95vh; }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ambient Background Orbs -->
+    <div class="ambient-bg">
+        <div class="ambient-orb"></div>
+        <div class="ambient-orb"></div>
+        <div class="ambient-orb"></div>
+    </div>
+
+    <!-- Floating Ingredients Background with Font Awesome -->
+    <div class="floating-ingredients">
+        <span class="floating-item"><i class="fa-solid fa-seedling"></i></span>
+        <span class="floating-item"><i class="fa-solid fa-wheat-awn"></i></span>
+        <span class="floating-item"><i class="fa-solid fa-bowl-food"></i></span>
+        <span class="floating-item"><i class="fa-solid fa-cheese"></i></span>
+        <span class="floating-item"><i class="fa-solid fa-leaf"></i></span>
+        <span class="floating-item"><i class="fa-solid fa-fire-flame-curved"></i></span>
+        <span class="floating-item"><i class="fa-solid fa-wheat-awn"></i></span>
+        <span class="floating-item"><i class="fa-solid fa-seedling"></i></span>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-section">
+            <img src="uploaded_image_1767709086633.jpg" alt="KOKO Corn Logo" class="logo"
+                onerror="this.style.display='none'">
+            <span class="brand-name">KOKO Corn</span>
+        </div>
+        <button class="cart-btn" onclick="openCart()">
+            <i class="fa-solid fa-cart-shopping"></i> <span class="cart-count" id="cartCount">0</span>
+        </button>
+    </header>
+
+    <!-- Category Navigation Tabs -->
+    <nav class="category-tabs" id="categoryTabs">
+        <div class="category-tabs-inner" id="categoryTabsInner">
+            <!-- Tabs populated by JS -->
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="uploaded_image_1767709086633.jpg" alt="KOKO Corn Logo" class="hero-logo"
+            onerror="this.style.display='none'">
+        <h1 class="welcome-text">Welcome to <span>Koko Corn</span></h1>
+        <p class="hero-tagline">FRESH · HOT · DELICIOUS</p>
+        <div class="hero-info-pills">
+            <div class="info-pill delivery">
+                <i class="fa-solid fa-motorcycle"></i>
+                <span>We Deliver!</span>
+            </div>
+            <div class="info-pill rate">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <span>1$ = 90,000 LBP</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section">
+        <h2 class="section-title"><i class="fa-solid fa-utensils"></i> Our Menu</h2>
+        <div id="menuContainer">
+            <!-- Menu items grouped by category will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Location Box -->
+    <div class="location-box">
+        <div class="location-map">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1000!2d35.288444!3d33.300167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzPCsDE4JzAwLjYiTiAzNcKwMTcnMTguNCJF!5e0!3m2!1sen!2s!4v1704614400000"
+                width="100%" height="150" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        <div class="location-address">Abasiyeh, Main Street, Near Rakwe Cafe</div>
+        <a href="https://www.google.com/maps?q=33.300167,35.288444" target="_blank" class="location-link">
+            <i class="fa-solid fa-location-dot"></i> Open in Google Maps
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">Developed by <span class="footer-brand">Scolar</span></p>
+        <p class="footer-text">
+            <a href="https://wa.me/96181079758" target="_blank"
+                style="color: #25D366; text-decoration: none; font-weight: 600;">
+                <i class="fa-brands fa-whatsapp"></i> 81-079758 (WhatsApp)
+            </a>
+        </p>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</h3>
+                <button class="close-btn" onclick="closeCart()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="cart-items" id="cartItems">
+                    <!-- Cart items will be populated by JavaScript -->
+                </div>
+                <div class="cart-total">
+                    <div class="cart-total-label">Total</div>
+                    <div class="cart-total-amount" id="cartTotal">0 LBP</div>
+                </div>
+                <div class="cart-actions">
+                    <button class="btn btn-clear" onclick="clearCart()">
+                        <i class="fa-solid fa-trash"></i> Clear All
+                    </button>
+                    <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Customization Modal -->
+    <div class="modal-overlay" id="customizeModal">
+        <div class="modal customize-modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="customizeTitle"><i class="fa-solid fa-plus-circle"></i> Add-Ons</h3>
+                <button class="close-btn" onclick="closeCustomize()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="customize-item-name" id="customizeItemName"></div>
+                <div class="customize-item-price" id="customizeItemPrice"></div>
+
+                <div class="addons-section" id="addonsSection">
+                    <h4 class="addons-title">Would you like to add?</h4>
+                    <div id="addonsList">
+                        <!-- Add-ons will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="customize-total">
+                    <span>Total:</span>
+                    <span id="customizeTotal">0 LBP</span>
+                </div>
+
+                <button class="btn btn-add-to-cart" onclick="confirmAddToCart()">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // ADDON DEFINITIONS
+        // ==========================================
+        const addonTypes = {
+            standard: [
+                { id: 'turmus', name: 'Lupin Beans', price: 100000 },
+                { id: 'carrotLemon', name: 'Carrots & Lemon', price: 50000 }
+            ],
+            sweetpotato: [
+                { id: 'barbecue', name: 'Barbecue Sauce', price: 50000 },
+                { id: 'cheddar', name: 'Cheddar Cheese', price: 50000 }
+            ],
+            barbecue: [
+                { id: 'barbecue', name: 'Barbecue Sauce', price: 50000 }
+            ],
+            cornCup: [
+                { id: 'extraCheese', name: 'Extra Cheese', price: 0.50, currency: 'USD' },
+                { id: 'extraSpicy', name: 'Extra Spicy', price: 0.50, currency: 'USD' },
+                { id: 'doritos', name: 'Doritos Topping', price: 1.00, currency: 'USD' },
+                { id: 'crispyChips', name: 'Crispy Chips', price: 1.00, currency: 'USD' },
+                { id: 'chicken', name: 'Chicken', price: 1.50, currency: 'USD' }
+            ],
+            none: []
+        };
+
+        // ==========================================
+        // CATEGORY DEFINITIONS
+        // ==========================================
+        const categories = [
+            {
+                id: 'corn-cups',
+                name: 'Corn Cups',
+                icon: 'fa-solid fa-mug-hot',
+                color: '#FFC72C',
+                gradient: 'linear-gradient(135deg, #FFC72C, #E6AF10)'
+            },
+            {
+                id: 'corn-dishes',
+                name: 'Corn Dishes',
+                icon: 'fa-solid fa-bowl-food',
+                color: '#FFB300',
+                gradient: 'linear-gradient(135deg, #FFB300, #FF8F00)'
+            },
+            {
+                id: 'saj',
+                name: 'Saj',
+                icon: 'fa-solid fa-bread-slice',
+                color: '#A1887F',
+                gradient: 'linear-gradient(135deg, #A1887F, #6D4C41)'
+            },
+            {
+                id: 'crispy-meals',
+                name: 'Crispy Meals',
+                icon: 'fa-solid fa-drumstick-bite',
+                color: '#E53935',
+                gradient: 'linear-gradient(135deg, #E53935, #C62828)'
+            },
+            {
+                id: 'sides',
+                name: 'Sides & Snacks',
+                icon: 'fa-solid fa-carrot',
+                color: '#66BB6A',
+                gradient: 'linear-gradient(135deg, #66BB6A, #388E3C)'
+            },
+            {
+                id: 'combos',
+                name: 'Combo Platters',
+                icon: 'fa-solid fa-plate-wheat',
+                color: '#AB47BC',
+                gradient: 'linear-gradient(135deg, #AB47BC, #7B1FA2)'
+            }
+        ];
+
+        // ==========================================
+        // MENU DATA — ALL ITEMS FROM IMAGES
+        // ==========================================
+        const menuItems = [
+            // ─── CORN CUPS (Image 3 - USD prices) ───
+            { id: 101, name: "Classic Corn", price: 2.00, currency: "USD", category: "corn-cups", description: "Corn with butter & salt", addonType: "cornCup" },
+            { id: 102, name: "Mexican Corn", price: 3.00, currency: "USD", category: "corn-cups", description: "Mayonnaise · Cheese · Paprika · Lemon", addonType: "cornCup" },
+            { id: 103, name: "Cheesy Corn", price: 3.00, currency: "USD", category: "corn-cups", description: "Cheddar cheese sauce & cream", addonType: "cornCup" },
+            { id: 104, name: "Spicy Volcano Corn", price: 3.50, currency: "USD", category: "corn-cups", description: "Hot sauce · Flamin' Cheetos · Cheese", addonType: "cornCup" },
+            { id: 105, name: "Italian Herbs Corn", price: 3.00, currency: "USD", category: "corn-cups", description: "Italian herbs · Butter · Parmesan", addonType: "cornCup" },
+            { id: 106, name: "Lemon & Sumac Corn", price: 2.50, currency: "USD", category: "corn-cups", description: "Lemon · Sumac · Olive oil", addonType: "cornCup" },
+            { id: 107, name: "Smoky Paprika Corn", price: 3.00, currency: "USD", category: "corn-cups", description: "Smoked paprika · Butter · Black pepper", addonType: "cornCup" },
+            { id: 108, name: "Creamy Mushroom Corn", price: 4.00, currency: "USD", category: "corn-cups", description: "Cream · Mushrooms · Mozzarella", addonType: "cornCup" },
+            { id: 109, name: "Chicken Corn Bowl", price: 4.50, currency: "USD", category: "corn-cups", description: "Corn · Chicken · Cheese · Spicy sauce", addonType: "cornCup" },
+            { id: 110, name: "Crispy Corn Mix", price: 4.00, currency: "USD", category: "corn-cups", description: "Corn · Crispy potato · Cheese", addonType: "cornCup" },
+
+            // ─── CORN DISHES (Image 2 - LBP prices) ───
+            { id: 201, name: "Grilled Corn", price: 200000, category: "corn-dishes", description: "Fresh fire-grilled corn with a smoky flavor", addonType: "standard" },
+            { id: 202, name: "Boiled Corn", price: 200000, category: "corn-dishes", description: "Tender sweet corn served hot", addonType: "standard" },
+            { id: 203, name: "Butter Corn", price: 300000, category: "corn-dishes", description: "Sweet corn mixed with creamy butter", addonType: "barbecue" },
+            { id: 204, name: "Creamy Cheese Corn", price: 500000, category: "corn-dishes", description: "Corn with butter, crème fraîche and melted cheese", addonType: "barbecue" },
+            { id: 205, name: "Cheesy Corn Noodles", price: 200000, category: "corn-dishes", description: "Instant noodles with sweet corn and melted cheese", addonType: "none" },
+
+            // ─── SAJ (Image 1 - LBP prices) ───
+            { id: 301, name: "Za'atar", price: 70000, category: "saj", description: "Traditional za'atar with olive oil", addonType: "none" },
+            { id: 302, name: "Za'atar with Veggies", price: 100000, category: "saj", description: "Za'atar with fresh vegetables", addonType: "none" },
+            { id: 303, name: "Akkawi Cheese", price: 150000, category: "saj", description: "Akkawi cheese melted on saj bread", addonType: "none" },
+            { id: 304, name: "Akkawi Cheese with Veggies", price: 200000, category: "saj", description: "Akkawi cheese with fresh vegetables", addonType: "none" },
+            { id: 305, name: "Akkawi & Kashkaval Cheese", price: 300000, category: "saj", description: "Akkawi and Kashkaval cheese melted together", addonType: "none" },
+            { id: 306, name: "Kashkaval & Smoked Turkey", price: 350000, category: "saj", description: "Kashkaval cheese with smoked turkey, lettuce, tomato, corn and mayo", addonType: "none" },
+            { id: 307, name: "Kashkaval & Mortadella", price: 300000, category: "saj", description: "Kashkaval cheese with mortadella, lettuce, tomato, cucumber and mayo", addonType: "none" },
+            { id: 308, name: "Sausage", price: 350000, category: "saj", description: "Sausage with cheese, tomato, pickles and mayo", addonType: "none" },
+            { id: 309, name: "Kofta", price: 300000, category: "saj", description: "Kofta with tomato, pickles and mayo", addonType: "none" },
+            { id: 310, name: "Kofta with Cheese", price: 350000, category: "saj", description: "Kofta with cheese, pickles, tomato and mayo", addonType: "none" },
+
+            // ─── CRISPY MEALS (Image 2 - LBP prices) ───
+            { id: 401, name: "3-Piece Crispy Meal", price: 650000, category: "crispy-meals", description: "3 crispy chicken strips served with French fries", addonType: "none" },
+            { id: 402, name: "5-Piece Crispy Meal + Pepsi", price: 1000000, category: "crispy-meals", description: "5 crispy chicken strips, fries and Pepsi", addonType: "none" },
+            { id: 403, name: "10-Piece Crispy Meal + 2 Pepsi", price: 2000000, category: "crispy-meals", description: "10 crispy chicken strips, fries and two Pepsi", addonType: "none" },
+
+            // ─── SIDES & SNACKS (Image 2 - LBP prices) ───
+            { id: 501, name: "Fava Beans", price: 200000, category: "sides", description: "Traditional seasoned fava beans", addonType: "standard" },
+            { id: 502, name: "Lupin Beans", price: 200000, category: "sides", description: "Fresh marinated lupin beans", addonType: "none" },
+            { id: 503, name: "Carrots", price: 200000, category: "sides", description: "Fresh crunchy carrots", addonType: "none" },
+            { id: 504, name: "Beetroot", price: 200000, category: "sides", description: "Fresh sliced beetroot", addonType: "none" },
+            { id: 505, name: "Sweet Potato", price: 200000, category: "sides", description: "Roasted sweet potato", addonType: "sweetpotato" },
+            { id: 506, name: "Chestnuts", price: 200000, category: "sides", description: "Roasted chestnuts", addonType: "none" },
+            { id: 507, name: "Pomegranate Seeds", price: 300000, category: "sides", description: "Fresh pomegranate seeds", addonType: "none" },
+
+            // ─── COMBO PLATTERS (Image 2 - LBP prices) ───
+            { id: 601, name: "Mix Plate", price: 500000, category: "combos", description: "Fava beans + Lupin beans + Corn", special: true, addonType: "standard" },
+            { id: 602, name: "Family Mix Plate", price: 900000, category: "combos", description: "A large platter perfect for sharing", special: true, addonType: "standard" },
+            { id: 603, name: "Winter Mix Plate", price: 10, currency: "USD", category: "combos", description: "Sweet potato + Chestnuts + Beetroot + Corn", special: true, addonType: "standard" }
+        ];
+
+        // ==========================================
+        // STATE
+        // ==========================================
+        let cart = [];
+        const USD_RATE = 90000; // 1 USD = 90,000 LBP
+
+        // ==========================================
+        // PRICE HELPERS
+        // ==========================================
+        function formatPrice(price, currency = "LBP") {
+            if (currency === "USD") {
+                return `$${price.toFixed(2)} (${(price * USD_RATE).toLocaleString('en-US')} LBP)`;
+            }
+            return `${price.toLocaleString('en-US')} LBP`;
+        }
+
+        function toLBP(price, currency = "LBP") {
+            if (currency === "USD") {
+                return price * USD_RATE;
+            }
+            return price;
+        }
+
+        // ==========================================
+        // RENDER CATEGORY TABS
+        // ==========================================
+        function renderCategoryTabs() {
+            const tabsInner = document.getElementById('categoryTabsInner');
+            tabsInner.innerHTML = categories.map((cat, index) => `
+                <button class="category-tab ${index === 0 ? 'active' : ''}" data-category="${cat.id}" onclick="scrollToCategory('${cat.id}')">
+                    <i class="${cat.icon}"></i>
+                    <span>${cat.name}</span>
+                </button>
+            `).join('');
+        }
+
+        // ==========================================
+        // RENDER MENU — GROUPED BY CATEGORY
+        // ==========================================
+        function renderMenu() {
+            const container = document.getElementById('menuContainer');
+            let html = '';
+
+            categories.forEach(cat => {
+                const items = menuItems.filter(item => item.category === cat.id);
+                if (items.length === 0) return;
+
+                // Category header
+                html += `
+                    <div class="category-header" id="cat-${cat.id}">
+                        <div class="category-header-icon" style="background: ${cat.gradient}">
+                            <i class="${cat.icon}"></i>
+                        </div>
+                        <div class="category-header-text">
+                            <div class="category-header-name">${cat.name}</div>
+                            <div class="category-header-count">${items.length} items</div>
+                        </div>
+                        <div class="category-header-line"></div>
+                    </div>
+                `;
+
+                // Items grid
+                html += `<div class="menu-grid">`;
+                items.forEach(item => {
+                    const isSpecial = item.special || false;
+                    html += `
+                        <div class="menu-card ${isSpecial ? 'special' : ''}" onclick="openCustomize(${item.id})">
+                            ${isSpecial ? '<span class="special-badge">Special</span>' : ''}
+                            <div class="menu-name">${item.name}</div>
+                            ${item.description ? `<div class="menu-description">${item.description}</div>` : ''}
+                            <span class="menu-price">${formatPrice(item.price, item.currency)}</span>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ==========================================
+        // SCROLL TO CATEGORY
+        // ==========================================
+        function scrollToCategory(catId) {
+            const el = document.getElementById(`cat-${catId}`);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            setActiveTab(catId);
+        }
+
+        function setActiveTab(catId) {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.category === catId);
+            });
+            const activeTab = document.querySelector(`.category-tab[data-category="${catId}"]`);
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+
+        // ==========================================
+        // SCROLL SPY — highlight active category tab
+        // ==========================================
+        function setupScrollSpy() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const catId = entry.target.id.replace('cat-', '');
+                        setActiveTab(catId);
+                    }
+                });
+            }, {
+                rootMargin: '-150px 0px -60% 0px',
+                threshold: 0
+            });
+
+            categories.forEach(cat => {
+                const el = document.getElementById(`cat-${cat.id}`);
+                if (el) observer.observe(el);
+            });
+        }
+
+        // ==========================================
+        // CUSTOMIZATION / ADD TO CART LOGIC
+        // ==========================================
+        let currentItem = null;
+
+        function openCustomize(itemId) {
+            currentItem = menuItems.find(i => i.id === itemId);
+            if (!currentItem) return;
+
+            const addons = addonTypes[currentItem.addonType] || [];
+
+            // If no add-ons, add directly to cart
+            if (addons.length === 0) {
+                addDirectToCart(currentItem);
+                return;
+            }
+
+            // Render dynamic add-ons
+            const addonsList = document.getElementById('addonsList');
+            addonsList.innerHTML = addons.map(addon => {
+                const addonPriceLBP = addon.currency === 'USD' ? addon.price * USD_RATE : addon.price;
+                const addonDisplay = addon.currency === 'USD'
+                    ? `$${addon.price.toFixed(2)} (${addonPriceLBP.toLocaleString('en-US')} LBP)`
+                    : `${addon.price.toLocaleString('en-US')} LBP`;
+                return `
+                    <label class="addon-option">
+                        <input type="checkbox" class="addon-checkbox-input" data-id="${addon.id}" data-price="${addonPriceLBP}" data-name="${addon.name}" onchange="updateCustomizeTotal()">
+                        <span class="addon-checkbox"></span>
+                        <span class="addon-name">${addon.name}</span>
+                        <span class="addon-price">${addonDisplay}</span>
+                    </label>
+                `;
+            }).join('');
+
+            // Set item info
+            document.getElementById('customizeItemName').textContent = currentItem.name;
+            document.getElementById('customizeItemPrice').textContent = formatPrice(currentItem.price, currentItem.currency);
+
+            // Update total
+            updateCustomizeTotal();
+
+            // Show modal
+            document.getElementById('customizeModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function addDirectToCart(item) {
+            const basePriceLBP = item.currency === 'USD' ? item.price * USD_RATE : item.price;
+
+            cart.push({
+                ...item,
+                addons: [],
+                addonsPrice: 0,
+                totalPrice: item.price,
+                totalPriceLBP: basePriceLBP,
+                cartId: Date.now()
+            });
+            updateCartCount();
+            showToast(`${item.name} added to cart ✓`);
+        }
+
+        function closeCustomize() {
+            document.getElementById('customizeModal').classList.remove('active');
+            document.body.style.overflow = '';
+            currentItem = null;
+        }
+
+        function updateCustomizeTotal() {
+            if (!currentItem) return;
+
+            let basePriceLBP = currentItem.currency === 'USD' ? currentItem.price * USD_RATE : currentItem.price;
+
+            const checkboxes = document.querySelectorAll('.addon-checkbox-input:checked');
+            let addonsPrice = 0;
+            checkboxes.forEach(cb => {
+                addonsPrice += parseInt(cb.dataset.price);
+            });
+
+            const totalLBP = basePriceLBP + addonsPrice;
+            document.getElementById('customizeTotal').textContent = `${totalLBP.toLocaleString('en-US')} LBP`;
+        }
+
+        function confirmAddToCart() {
+            if (!currentItem) return;
+
+            let addons = [];
+            let addonsPrice = 0;
+
+            const checkboxes = document.querySelectorAll('.addon-checkbox-input:checked');
+            checkboxes.forEach(cb => {
+                addons.push(cb.dataset.name);
+                addonsPrice += parseInt(cb.dataset.price);
+            });
+
+            const basePriceLBP = currentItem.currency === 'USD' ? currentItem.price * USD_RATE : currentItem.price;
+            const totalPriceLBP = basePriceLBP + addonsPrice;
+
+            cart.push({
+                ...currentItem,
+                addons: addons,
+                addonsPrice: addonsPrice,
+                totalPrice: currentItem.price + (currentItem.currency === 'USD' ? 0 : addonsPrice),
+                totalPriceLBP: totalPriceLBP,
+                cartId: Date.now()
+            });
+
+            updateCartCount();
+            closeCustomize();
+            showToast(`${currentItem.name} added to cart ✓`);
+        }
+
+        // Close customize modal on overlay click
+        document.getElementById('customizeModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeCustomize();
+            }
+        });
+
+        // ==========================================
+        // CART LOGIC
+        // ==========================================
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        function openCart() {
+            renderCartItems();
+            document.getElementById('cartModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function renderCartItems() {
+            const cartItemsContainer = document.getElementById('cartItems');
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="cart-empty">
+                        <div class="cart-empty-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+                document.getElementById('cartTotal').textContent = '0 LBP';
+                return;
+            }
+
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        ${item.addons && item.addons.length > 0 ? `<div class="cart-item-addons">+ ${item.addons.join(' + ')}</div>` : ''}
+                        <div class="cart-item-price">${item.totalPriceLBP.toLocaleString('en-US')} LBP</div>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeFromCart(${item.cartId})">Remove</button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.totalPriceLBP, 0);
+            document.getElementById('cartTotal').textContent = `${total.toLocaleString('en-US')} LBP`;
+        }
+
+        function removeFromCart(cartId) {
+            cart = cart.filter(item => item.cartId !== cartId);
+            updateCartCount();
+            renderCartItems();
+            showToast('Removed from cart');
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartCount();
+            renderCartItems();
+            showToast('Cart cleared');
+        }
+
+        // ==========================================
+        // WHATSAPP ORDER
+        // ==========================================
+        function sendToWhatsApp() {
+            if (cart.length === 0) {
+                showToast('Cart is empty!');
+                return;
+            }
+
+            const phoneNumber = '96170445366';
+
+            let message = 'Hi, I would like to order the following:\n\n';
+
+            cart.forEach(item => {
+                let itemLine = `- ${item.name}`;
+                if (item.addons && item.addons.length > 0) {
+                    itemLine += ` + ${item.addons.join(' + ')}`;
+                }
+                itemLine += `: ${item.totalPriceLBP.toLocaleString('en-US')} LBP\n`;
+                message += itemLine;
+            });
+
+            const total = cart.reduce((sum, item) => sum + item.totalPriceLBP, 0);
+
+            message += '\n';
+            message += `Total: ${total.toLocaleString('en-US')} LBP\n`;
+            message += '\nThank you! 🌽';
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // ==========================================
+        // TOAST
+        // ==========================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Close modal on overlay click
+        document.getElementById('cartModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeCart();
+            }
+        });
+
+        // ==========================================
+        // INITIALIZE
+        // ==========================================
+        renderCategoryTabs();
+        renderMenu();
+        setupScrollSpy();
+    </script>
+</body>
+
+</html>
